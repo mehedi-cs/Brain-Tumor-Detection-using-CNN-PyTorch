@@ -15,3 +15,7 @@ def findConv2dOutShape(hin, win, conv, pool=2):
         wout /= pool
 
     return int(hout), int(wout)
+
+def get_lr(opt):
+    for param_group in opt.param_groups:
+        return param_group['lr']
