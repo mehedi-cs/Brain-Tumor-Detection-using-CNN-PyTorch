@@ -15,3 +15,9 @@ def true_and_pred(val_loader, model, device):
             y_true.extend(labels.numpy())
             y_pred.extend(preds.cpu().numpy())
     return np.array(y_true), np.array(y_pred)
+
+def evaluate_model(val_loader, model, device, class_labels):
+    y_true, y_pred = true_and_pred(val_loader, model, device)
+    print(classification_report(y_true, y_pred))
+    cm = confusion_matrix(y_true, y_pred)
+    show_confusion_matrix(cm, class_labels)
