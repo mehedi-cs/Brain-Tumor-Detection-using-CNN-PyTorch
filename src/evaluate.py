@@ -21,3 +21,23 @@ def evaluate_model(val_loader, model, device, class_labels):
     print(classification_report(y_true, y_pred))
     cm = confusion_matrix(y_true, y_pred)
     show_confusion_matrix(cm, class_labels)
+
+def show_confusion_matrix(cm, class_labels, title='Confusion Matrix', cmap=plt.cm.YlGnBu):
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(class_labels))
+    plt.xticks(tick_marks, class_labels, rotation=45)
+    plt.yticks(tick_marks, class_labels)
+
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, f"{cm[i, j]}",
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.tight_layout()
+    plt.show()
