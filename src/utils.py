@@ -34,3 +34,20 @@ def loss_batch(loss_func, output, target, opt=None):
         opt.step()
 
     return loss.item(), metric_b
+
+
+def loss_epoch(model, loss_func, dataset_dl, opt=None):
+    run_loss, t_metric = 0.0, 0.0
+    len_data = len(dataset_dl.dataset)
+    device = next(model.parameters()).device
+
+    for xb, yb in dataset_dl:
+        xb, yb = xb.to(device), yb.to(device)
+        output = model(xb)
+        loss_b, metric_b = loss_batch(loss_func, output, yb, opt)
+        run_loss += loss_b
+        t_metric += metric_b
+
+    loss = run_loss / float(len_data)
+    metric = t_metric / float(len_data)
+    return loss, metric
