@@ -20,3 +20,14 @@ def get_transforms():
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])
     ])
+
+
+def get_dataloaders(data_dir, batch_size=64):
+    transform = get_transforms()
+    train_set = datasets.ImageFolder(data_dir.joinpath("train"), transform=transform)
+    val_set = datasets.ImageFolder(data_dir.joinpath("val"), transform=transform)
+
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=2)
+    val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=True, num_workers=2)
+
+    return train_loader, val_loader, train_set.class_to_idx
